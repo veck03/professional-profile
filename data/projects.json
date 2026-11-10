@@ -2,6 +2,7 @@
   "projects": [
     {
       "id": "scientific-research-assistant",
+      "image": "research-assistant.webp",
       "title": "Agentic Scientific Research Assistant",
       "category": "AI/ML",
       "technologies": [
@@ -33,6 +34,7 @@
 
     {
       "id": "neural-network-from-scratch",
+      "image": "neural-network-from-scratch.webp",
       "title": "Neural Network from Scratch",
       "category": "Deep Learning",
       "technologies": [
@@ -61,6 +63,7 @@
 
     {
       "id": "urban-heat-mitigation",
+      "image": "urban-heat-mitigation.webp",
       "title": "Urban Heat Mitigation using AI/ML",
       "category": "Geospatial AI/ML",
       "technologies": [

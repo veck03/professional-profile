@@ -1,0 +1,91 @@
+{
+  "projects": [
+    {
+      "id": "scientific-research-assistant",
+      "title": "Agentic Scientific Research Assistant",
+      "category": "AI/ML",
+      "technologies": [
+        "Python",
+        "RAG",
+        "ChromaDB",
+        "Sentence Transformers",
+        "Groq API"
+      ],
+      "short_description": "An agentic research platform combining scientific paper retrieval with structured oceanographic data analysis.",
+
+      "resume_bullets": [
+        "Developed an agentic RAG system for scientific research, integrating retrieval from oceanographic research papers with structured oceanographic data.",
+        "Implemented BM25 and vector search with cross-encoder reranking to improve retrieval relevance.",
+        "Built an LLM-based query router using Groq API to direct queries to paper retrieval, dataset analysis, or combined workflows."
+      ],
+
+      "portfolio_description": "An AI-powered scientific research assistant that combines paper retrieval, semantic search, reranking, and structured dataset analysis.",
+
+      "links": {
+        "github": "",
+        "live_demo": ""
+      },
+
+      "featured": true,
+      "resume_priority": 1,
+      "portfolio_priority": 1
+    },
+
+    {
+      "id": "neural-network-from-scratch",
+      "title": "Neural Network from Scratch",
+      "category": "Deep Learning",
+      "technologies": [
+        "Python",
+        "NumPy"
+      ],
+      "short_description": "A neural network implemented from scratch to understand the mathematical foundations of deep learning.",
+
+      "resume_bullets": [
+        "Implemented a neural network from scratch in Python and NumPy to understand forward propagation and backpropagation.",
+        "Implemented weighted layers, activation functions, loss computation, gradient calculation, and parameter updates.",
+        "Trained and evaluated the model while analyzing learning behavior without relying on high-level deep learning frameworks."
+      ],
+
+      "portfolio_description": "A foundational deep learning project implementing neural network components and training mechanics using Python and NumPy.",
+
+      "links": {
+        "github": "",
+        "live_demo": ""
+      },
+
+      "featured": true,
+      "resume_priority": 2,
+      "portfolio_priority": 2
+    },
+
+    {
+      "id": "urban-heat-mitigation",
+      "title": "Urban Heat Mitigation using AI/ML",
+      "category": "Geospatial AI/ML",
+      "technologies": [
+        "Python",
+        "Google Earth Engine",
+        "Remote Sensing"
+      ],
+      "short_description": "An ML-based approach to analyze urban heat patterns in Delhi using satellite-derived environmental and urban features.",
+
+      "resume_bullets": [
+        "Developing an ML-based approach to analyze urban heat patterns in Delhi using satellite-derived environmental and urban features.",
+        "Processed Landsat and Sentinel-2 imagery to derive LST, NDVI, NDWI, EVI, and NDBI.",
+        "Engineered geospatial features including land cover, tree cover, population density, elevation, slope, and distance to water."
+      ],
+
+      "portfolio_description": "A geospatial AI/ML project analyzing urban heat patterns through satellite imagery, environmental indices, and engineered urban features.",
+
+      "links": {
+        "github": "",
+        "live_demo": ""
+      },
+
+      "featured": true,
+      "resume_priority": 3,
+      "portfolio_priority": 3
+    }
+  ]
+}

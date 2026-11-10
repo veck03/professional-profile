@@ -1,0 +1,20 @@
+{
+  "education": [
+    {
+      "institution": "Madhav Institute of Technology and Science",
+      "location": "Gwalior, India",
+      "degree": "B.Tech. in Mathematics and Computing",
+      "cgpa": 9.17,
+      "start_date": "2025-08",
+      "expected_end_date": "2029-08"
+    },
+    {
+      "institution": "Swami Vivekananda Academy",
+      "location": "Gwalior, India",
+      "degree": "CBSE Class 12th PCM",
+      "percentage": 91.8,
+      "start_date": "2023-04",
+      "end_date": "2024-06"
+    }
+  ]
+}

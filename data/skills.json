@@ -1,0 +1,31 @@
+{
+  "programming": [
+    "Python",
+    "C++"
+  ],
+
+  "ai_ml": [
+    "Machine Learning",
+    "Neural Networks",
+    "Large Language Models",
+    "Retrieval-Augmented Generation",
+    "Agentic AI"
+  ],
+
+  "libraries_frameworks": [
+    "NumPy",
+    "Pandas",
+    "Scikit-learn",
+    "Sentence Transformers",
+    "ChromaDB",
+    "FastAPI",
+    "LangChain"
+  ],
+
+  "tools": [
+    "Git",
+    "GitHub",
+    "Jupyter Notebook",
+    "VS Code"
+  ]
+}

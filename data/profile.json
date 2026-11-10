@@ -1,0 +1,16 @@
+{
+  "name": "Vansh Tomar",
+  "headline": "AI/ML Engineer",
+  "degree": "B.Tech. Mathematics and Computing",
+  "location": "Madhya Pradesh, India",
+  "email": "vansh.tomar.0306@gmail.com",
+  "phone": "+91 7999826982",
+
+  "links": {
+    "linkedin": "",
+    "github": "",
+    "portfolio": ""
+  },
+
+  "summary": "Mathematics and Computing undergraduate with hands-on project experience in machine learning, scientific data processing, and LLM-powered retrieval systems. Interested in developing practical AI solutions, with a particular focus on agentic AI, deep learning, and geospatial applications."
+}

@@ -23,7 +23,7 @@
       "portfolio_description": "An AI-powered scientific research assistant that combines paper retrieval, semantic search, reranking, and structured dataset analysis.",
 
       "links": {
-        "github": "",
+        "github": "https://github.com/veck03/Nerivane",
         "live_demo": ""
       },
 
@@ -82,7 +82,7 @@
       "portfolio_description": "A geospatial AI/ML project analyzing urban heat patterns through satellite imagery, environmental indices, and engineered urban features.",
 
       "links": {
-        "github": "",
+        "github": "https://github.com/veck03/urbivue",
         "live_demo": ""
       },
 

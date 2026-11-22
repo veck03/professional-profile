@@ -89,6 +89,41 @@
       "featured": true,
       "resume_priority": 3,
       "portfolio_priority": 3
+    },
+
+    {
+      "id": "bangalore-house-price-prediction",
+      "image": "house-price-prediction.webp",
+      "title": "Bangalore House Price Prediction",
+      "category": "AI/ML",
+      "technologies": [
+        "Python",
+        "Scikit-Learn",
+        "Linear Regression",
+        "Pandas",
+        "NumPy",
+        "FastAPI"
+      ],
+      "short_description": "A full-stack machine learning application that predicts Bangalore real estate prices using property attributes and a trained Linear Regression model.",
+
+      "resume_bullets": [
+        "Developed a full-stack machine learning application to estimate Bangalore property prices using a Scikit-Learn Linear Regression model trained on housing market data.",
+        "Built a decoupled REST API using Python and FastAPI to serve real-time predictions, integrating the trained model with a responsive frontend.",
+        "Implemented an interactive web interface using HTML, CSS, and JavaScript, enabling users to generate price estimates based on location, square footage, bedrooms, and bathrooms.",
+        "Deployed the frontend on Vercel and the backend API on Render, establishing an independent, cloud-hosted application architecture."
+      ],
+
+      "portfolio_description": "A full-stack real estate price prediction platform that estimates property values across Bangalore using machine learning. The application combines a Scikit-Learn Linear Regression model with a Python FastAPI backend and a responsive JavaScript frontend. Users can enter property details, including neighborhood, square footage, bedrooms, and bathrooms, to receive instant price estimates in Indian Lakhs (₹). The decoupled architecture separates frontend hosting on Vercel from backend inference on Render, enabling independent deployment and API-driven predictions.",
+
+      "links": {
+        "github": "https://github.com/veck03/Banglore_house_price_prediction",
+        "live_demo": "https://banglore-house-price-prediction-navy.vercel.app/"
+      },
+
+      "featured": false,
+      "resume_priority": 2,
+      "portfolio_priority": 2
     }
+
   ]
 }

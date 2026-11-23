@@ -1,0 +1,5 @@
+{
+  "schema_version": 2,
+  "files": ["profile.json", "education.json", "skills.json", "projects.json"],
+  "assets_dir": "assets"
+}

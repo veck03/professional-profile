@@ -1,0 +1,33 @@
+name: Profile
+
+on:
+  push:
+    branches: [main]
+    paths: ["data/**", "assets/**", "scripts/**"]
+  pull_request:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/validate.mjs
+
+  notify-sites:
+    needs: validate
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo: ["veck03/portfolio"] # add your other project sites here
+    steps:
+      - name: Trigger rebuild
+        run: |
+          curl -fsS -X POST \
+            -H "Authorization: Bearer ${{ secrets.SITES_DISPATCH_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/${{ matrix.repo }}/dispatches \
+            -d '{"event_type":"profile-updated"}'

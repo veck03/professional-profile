@@ -1,6 +1,10 @@
 {
+  "schema_version": 2,
   "education": [
     {
+      "id": "mits-btech",
+      "level": "undergraduate",
+      "status": "in_progress",
       "institution": "Madhav Institute of Technology and Science",
       "location": "Gwalior, India",
       "degree": "B.Tech. in Mathematics and Computing",
@@ -9,6 +13,9 @@
       "expected_end_date": "2029-08"
     },
     {
+      "id": "svacademy-class12",
+      "level": "secondary",
+      "status": "completed",
       "institution": "Swami Vivekananda Academy",
       "location": "Gwalior, India",
       "degree": "CBSE Class 12th PCM",

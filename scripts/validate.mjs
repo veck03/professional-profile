@@ -53,6 +53,9 @@ if (profile) {
   if (profile.avatar?.file && !existsSync(join(ROOT, "assets", profile.avatar.file))) {
     warn(`avatar file missing: assets/${profile.avatar.file}`);
   }
+  if (profile.resume?.file && !existsSync(join(ROOT, "assets", profile.resume.file))) {
+  warn(`resume file missing: assets/${profile.resume.file}`);
+}
 }
 
 // 3. education

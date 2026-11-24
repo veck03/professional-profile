@@ -10,20 +10,24 @@ const fail = (m) => errors.push(m);
 const warn = (m) => warnings.push(m);
 
 const FILES = ["profile.json", "education.json", "skills.json", "projects.json"];
+const SECTION_TYPES = ["text", "list", "steps", "metrics", "flow", "image"];
+
 const isUrl = (v) => typeof v === "string" && /^https?:\/\//.test(v);
+const isStr = (v) => typeof v === "string" && v.trim() !== "";
+const isArr = (v) => Array.isArray(v) && v.length > 0;
 const duplicates = (list) => list.filter((v, i) => list.indexOf(v) !== i);
 const need = (obj, keys, where) =>
   keys.forEach((k) => {
     if (obj?.[k] === undefined || obj[k] === "") fail(`${where}: missing "${k}"`);
   });
 
-function loadJson(name) {
-  const path = join(ROOT, "data", name);
-  if (!existsSync(path)) { fail(`data/${name} does not exist`); return null; }
+function loadJson(rel) {
+  const path = join(ROOT, "data", rel);
+  if (!existsSync(path)) { fail(`data/${rel} does not exist`); return null; }
   try {
     return JSON.parse(readFileSync(path, "utf8"));
   } catch (e) {
-    fail(`${name}: ${e.message}`);
+    fail(`${rel}: ${e.message}`);
     return null;
   }
 }
@@ -54,8 +58,8 @@ if (profile) {
     warn(`avatar file missing: assets/${profile.avatar.file}`);
   }
   if (profile.resume?.file && !existsSync(join(ROOT, "assets", profile.resume.file))) {
-  warn(`resume file missing: assets/${profile.resume.file}`);
-}
+    warn(`resume file missing: assets/${profile.resume.file}`);
+  }
 }
 
 // 3. education
@@ -94,7 +98,84 @@ if (skills) {
   flat.filter((s) => !grouped.has(s)).forEach((s) => warn(`skills.json: "${s}" is not shown in any display group`));
 }
 
-// 5. projects
+// 5. case studies
+function validateCaseStudy(id, rel) {
+  const w = `case study "${id}"`;
+  if (!/^case-studies\/[\w-]+\.json$/.test(rel)) {
+    fail(`${w}: case_study must look like "case-studies/<name>.json" (got "${rel}")`);
+    return;
+  }
+  const cs = loadJson(rel);
+  if (!cs) return;
+
+  if (!isStr(cs.summary)) fail(`${w}: "summary" is required`);
+  else if (cs.summary.length > 450) warn(`${w}: summary is ${cs.summary.length} characters (450 or fewer reads best)`);
+
+  if (cs.stack !== undefined && !(Array.isArray(cs.stack) && cs.stack.every(isStr))) {
+    fail(`${w}: "stack" must be a list of strings`);
+  }
+  if (cs.facts !== undefined) {
+    if (!Array.isArray(cs.facts)) fail(`${w}: "facts" must be a list`);
+    else cs.facts.forEach((f, i) => need(f, ["label", "value"], `${w} fact ${i + 1}`));
+  }
+  if (cs.images !== undefined) {
+    if (!Array.isArray(cs.images)) fail(`${w}: "images" must be a list`);
+    else {
+      cs.images.forEach((img, i) => {
+        need(img, ["file", "alt"], `${w} image ${i + 1}`);
+        if (img.file && !existsSync(join(ROOT, "assets", "case-studies", img.file))) {
+          warn(`${w}: image missing: assets/case-studies/${img.file}`);
+        }
+      });
+    }
+  }
+
+  if (!isArr(cs.sections)) { fail(`${w}: "sections" must be a non-empty array`); return; }
+
+  cs.sections.forEach((s, i) => {
+    const sw = `${w}, section ${i + 1}`;
+    if (!SECTION_TYPES.includes(s?.type)) {
+      fail(`${sw}: unknown type "${s?.type}" (use one of: ${SECTION_TYPES.join(", ")})`);
+      return;
+    }
+    if (s.type !== "image" && !isStr(s.title)) fail(`${sw}: "title" is required`);
+
+    switch (s.type) {
+      case "text":
+        if (!isArr(s.body) || !s.body.every(isStr)) fail(`${sw}: "body" must be a list of non-empty paragraphs`);
+        break;
+      case "list":
+        if (!isArr(s.items) || !s.items.every(isStr)) fail(`${sw}: "items" must be a list of non-empty strings`);
+        break;
+      case "steps":
+        if (!isArr(s.steps)) fail(`${sw}: "steps" must be a non-empty list`);
+        else s.steps.forEach((st, j) => { if (!isStr(st?.title)) fail(`${sw}, step ${j + 1}: "title" is required`); });
+        break;
+      case "metrics":
+        if (!isArr(s.items)) fail(`${sw}: "items" must be a non-empty list`);
+        else s.items.forEach((m, j) => need(m, ["value", "label"], `${sw}, metric ${j + 1}`));
+        break;
+      case "flow":
+        if (!isArr(s.tabs)) fail(`${sw}: "tabs" must be a non-empty list`);
+        else {
+          s.tabs.forEach((t, j) => {
+            if (!isStr(t?.label)) fail(`${sw}, tab ${j + 1}: "label" is required`);
+            if (!isArr(t?.steps)) fail(`${sw}, tab ${j + 1}: "steps" must be a non-empty list`);
+            else t.steps.forEach((st, k) => { if (!isStr(st?.title)) fail(`${sw}, tab ${j + 1}, step ${k + 1}: "title" is required`); });
+          });
+        }
+        break;
+      case "image":
+        need(s, ["file", "alt"], sw);
+        if (s.file && !existsSync(join(ROOT, "assets", "case-studies", s.file))) {
+          warn(`${sw}: image missing: assets/case-studies/${s.file}`);
+        }
+        break;
+    }
+  });
+}
+
+// 6. projects
 if (projects) {
   const list = projects.projects;
   if (!Array.isArray(list)) {
@@ -118,6 +199,7 @@ if (projects) {
       [p.image, ...(p.gallery || [])].forEach((img) => {
         if (img && !existsSync(join(ROOT, "assets", "projects", img))) warn(`${w}: image missing: assets/projects/${img}`);
       });
+      if (p.case_study) validateCaseStudy(p.id, p.case_study);
     });
   }
 }

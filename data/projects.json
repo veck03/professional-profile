@@ -7,7 +7,7 @@
       "tagline": "Agentic RAG for ocean science",
       "category": "AI/ML",
       "status": "completed",
-      "image": "research-assistant.webp",
+      "image": "research-assistant.jpg",
       "gallery": [],
       "technologies": ["Python", "RAG", "ChromaDB", "Sentence Transformers", "Groq API"],
       "short_description": "An agentic research platform combining scientific paper retrieval with structured oceanographic data analysis.",
@@ -22,6 +22,7 @@
         "live_demo": null
       },
       "featured": true,
+      "case_study": "case-studies/scientific-research-assistant.json",
       "resume_priority": 1,
       "portfolio_priority": 1
     },

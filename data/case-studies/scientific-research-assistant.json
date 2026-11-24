@@ -15,6 +15,7 @@
   ],
   "facts": [],
   "images": [
+    { "file": "scientific-research-assistant/home.jpg", "alt": "User Interface", "caption": "Nerivane home page" },
     { "file": "scientific-research-assistant/ui.webp", "alt": "Answer view with sources", "caption": "Answers with paper and page references" },
     { "file": "scientific-research-assistant/data.webp", "alt": "Data query result" }
     ],

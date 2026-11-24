@@ -10,7 +10,7 @@ const fail = (m) => errors.push(m);
 const warn = (m) => warnings.push(m);
 
 const FILES = ["profile.json", "education.json", "skills.json", "projects.json"];
-const SECTION_TYPES = ["text", "list", "steps", "metrics", "flow", "image"];
+const SECTION_TYPES = ["text", "list", "steps", "metrics", "pipeline", "image"];
 
 const isUrl = (v) => typeof v === "string" && /^https?:\/\//.test(v);
 const isStr = (v) => typeof v === "string" && v.trim() !== "";
@@ -108,6 +108,10 @@ function validateCaseStudy(id, rel) {
   const cs = loadJson(rel);
   if (!cs) return;
 
+  if (cs.kind !== undefined && !["project", "case_study"].includes(cs.kind)) {
+    fail(`${w}: "kind" must be "project" or "case_study"`);
+  }
+
   if (!isStr(cs.summary)) fail(`${w}: "summary" is required`);
   else if (cs.summary.length > 450) warn(`${w}: summary is ${cs.summary.length} characters (450 or fewer reads best)`);
 
@@ -155,16 +159,54 @@ function validateCaseStudy(id, rel) {
         if (!isArr(s.items)) fail(`${sw}: "items" must be a non-empty list`);
         else s.items.forEach((m, j) => need(m, ["value", "label"], `${sw}, metric ${j + 1}`));
         break;
-      case "flow":
-        if (!isArr(s.tabs)) fail(`${sw}: "tabs" must be a non-empty list`);
-        else {
-          s.tabs.forEach((t, j) => {
-            if (!isStr(t?.label)) fail(`${sw}, tab ${j + 1}: "label" is required`);
-            if (!isArr(t?.steps)) fail(`${sw}, tab ${j + 1}: "steps" must be a non-empty list`);
-            else t.steps.forEach((st, k) => { if (!isStr(st?.title)) fail(`${sw}, tab ${j + 1}, step ${k + 1}: "title" is required`); });
+        case "pipeline": {
+        const nodes = Array.isArray(s.nodes) ? s.nodes : [];
+        const ids = nodes.map((n) => n?.id);
+        if (!nodes.length) fail(`${sw}: "nodes" must be a non-empty list`);
+        nodes.forEach((n, j) => need(n, ["id", "title"], `${sw}, node ${j + 1}`));
+        duplicates(ids).forEach((d) => fail(`${sw}: duplicate node id "${d}"`));
+
+        if (!Array.isArray(s.layers) || !s.layers.length) {
+          fail(`${sw}: "layers" must be a non-empty list of rows`);
+        } else {
+          s.layers.forEach((row, j) => {
+            if (!Array.isArray(row) || row.length < 1 || row.length > 3) {
+              fail(`${sw}, layer ${j + 1}: each row needs 1 to 3 cells`);
+            }
+          });
+          const placed = s.layers.flat().filter(Boolean);
+          placed.forEach((id) => {
+            if (!ids.includes(id)) fail(`${sw}: layers mention unknown node "${id}"`);
+          });
+          ids.filter((id) => !placed.includes(id)).forEach((id) =>
+            fail(`${sw}: node "${id}" is not placed in any layer`)
+          );
+        }
+
+        if (!isArr(s.routes)) {
+          fail(`${sw}: "routes" must be a non-empty list`);
+        } else {
+          const rowOf = (id) =>
+            (s.layers || []).findIndex((row) => Array.isArray(row) && row.includes(id));
+          s.routes.forEach((r, j) => {
+            const rw = `${sw}, route ${j + 1}`;
+            if (!isStr(r?.label)) fail(`${rw}: "label" is required`);
+            if (!isArr(r?.paths)) { fail(`${rw}: "paths" must be a non-empty list`); return; }
+            r.paths.forEach((path, k) => {
+              if (!isArr(path) || path.length < 2) { fail(`${rw}, path ${k + 1}: needs at least 2 nodes`); return; }
+              path.forEach((id) => {
+                if (!ids.includes(id)) fail(`${rw}, path ${k + 1}: unknown node "${id}"`);
+              });
+              for (let m = 1; m < path.length; m++) {
+                if (rowOf(path[m]) <= rowOf(path[m - 1])) {
+                  fail(`${rw}, path ${k + 1}: "${path[m]}" must be in a lower row than "${path[m - 1]}"`);
+                }
+              }
+            });
           });
         }
         break;
+      }
       case "image":
         need(s, ["file", "alt"], sw);
         if (s.file && !existsSync(join(ROOT, "assets", "case-studies", s.file))) {

@@ -1,6 +1,6 @@
 {
   "schema_version": 2,
-  "label": "Project details",
+  "kind": "project",
   "summary": "An agentic research assistant that answers questions about ocean and climate research papers using hybrid retrieval, reranking, and citation-grounded generation. It also supports numerical queries over a structured oceanographic dataset.",
   "stack": [
     "Python",
@@ -14,11 +14,7 @@
     "React + Vite"
   ],
   "facts": [],
-  "images": [
-    { "file": "scientific-research-assistant/home.jpg", "alt": "User Interface", "caption": "Nerivane home page" },
-    { "file": "scientific-research-assistant/ui.webp", "alt": "Answer view with sources", "caption": "Answers with paper and page references" },
-    { "file": "scientific-research-assistant/data.webp", "alt": "Data query result" }
-    ],
+  "images": [],
   "note": null,
   "sections": [
     {
@@ -30,47 +26,56 @@
       ]
     },
     {
-      "type": "flow",
+      "type": "pipeline",
       "title": "How a question is answered",
-      "tabs": [
+      "nodes": [
+        { "id": "query", "icon": "message", "title": "User question", "subtitle": "Sent from the React interface to the FastAPI backend" },
+        { "id": "router", "icon": "route", "title": "Query router", "subtitle": "An LLM decides: PAPER, DATA or BOTH" },
+        { "id": "retrieval", "icon": "search", "title": "Hybrid retrieval", "subtitle": "ChromaDB vectors + BM25, merged with Reciprocal Rank Fusion" },
+        { "id": "data", "icon": "table", "title": "Ocean data tool", "subtitle": "pandas queries over a sample oceanographic dataset" },
+        { "id": "rerank", "icon": "sort", "title": "Cross-encoder reranking", "subtitle": "Keeps the most relevant passages" },
+        { "id": "answer", "icon": "sparkle", "title": "Grounded answer", "subtitle": "Written from the evidence, with sources" }
+      ],
+      "layers": [
+        ["query"],
+        ["router"],
+        ["retrieval", "data"],
+        ["rerank", null],
+        ["answer"]
+      ],
+      "routes": [
         {
           "label": "Paper question",
-          "steps": [
-            { "title": "Query router", "subtitle": "Groq API classifies the question as PAPER, DATA or BOTH" },
-            { "title": "Hybrid retrieval", "subtitle": "Vector search plus BM25, merged with Reciprocal Rank Fusion" },
-            { "title": "Cross-encoder reranking", "subtitle": "Reorders passages by relevance to the query" },
-            { "title": "Grounded answer", "subtitle": "Generated from the evidence, with paper and page references" }
-          ]
+          "icon": "doc",
+          "paths": [["query", "router", "retrieval", "rerank", "answer"]],
+          "note": "Answers cite the paper and page of each passage."
         },
         {
           "label": "Data question",
-          "steps": [
-            { "title": "Query router", "subtitle": "Routes numerical questions to the data tool" },
-            { "title": "Ocean data tool", "subtitle": "pandas queries over a sample oceanographic dataset" },
-            { "title": "Answer", "subtitle": "Built from the data results" }
-          ]
+          "icon": "table",
+          "paths": [["query", "router", "data", "answer"]],
+          "note": "Numerical questions are answered from a sample oceanographic dataset."
         },
         {
           "label": "Both",
-          "steps": [
-            { "title": "Query router", "subtitle": "Sends the question down both paths" },
-            { "title": "Paper retrieval and data tool", "subtitle": "Evidence and data results are gathered together" },
-            { "title": "Answer with sources", "subtitle": "One response that combines both" }
-          ]
+          "icon": "layers",
+          "paths": [
+            ["query", "router", "retrieval", "rerank", "answer"],
+            ["router", "data", "answer"]
+          ],
+          "note": "Evidence from the papers and results from the data tool are combined into one answer."
         }
       ]
     },
     {
       "type": "steps",
-      "title": "The retrieval pipeline",
+      "title": "Behind the retrieval step",
       "steps": [
         { "title": "Document ingestion", "text": "Research PDFs are extracted and processed into text." },
         { "title": "Chunking", "text": "Text is divided into overlapping chunks that keep paper and page metadata." },
         { "title": "Dense retrieval", "text": "Sentence-transformer embeddings retrieve semantically relevant passages from ChromaDB." },
         { "title": "Keyword retrieval", "text": "BM25 finds passages that match important terms in the query." },
-        { "title": "Hybrid fusion", "text": "Reciprocal Rank Fusion combines the dense and keyword rankings." },
-        { "title": "Reranking", "text": "A cross-encoder scores the candidates and selects the most relevant evidence." },
-        { "title": "Answer generation", "text": "The language model writes a response from the selected evidence, with citations." }
+        { "title": "Hybrid fusion", "text": "Reciprocal Rank Fusion combines the dense and keyword rankings." }
       ]
     },
     {

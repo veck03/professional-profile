@@ -1,14 +1,16 @@
 {
   "schema_version": 2,
 
-  "programming": ["Python", "C++"],
+  "programming": ["Python", "C++", "JavaScript", "HTML & CSS"],
 
   "ai_ml": [
     "Machine Learning",
     "Neural Networks",
     "Large Language Models",
     "Retrieval-Augmented Generation",
-    "Agentic AI"
+    "Agentic AI",
+    "Semantic Search",
+    "Reranking"
   ],
 
   "libraries_frameworks": [
@@ -18,49 +20,65 @@
     "Sentence Transformers",
     "ChromaDB",
     "FastAPI",
-    "LangChain"
+    "LangChain",
+    "React",
+    "Groq API"
   ],
 
-  "tools": ["Git", "GitHub", "Jupyter Notebook", "VS Code"],
+  "tools": [
+    "Git",
+    "GitHub",
+    "Jupyter Notebook",
+    "VS Code",
+    "Google Earth Engine",
+    "Vercel",
+    "Render"
+  ],
 
   "display_groups": [
     {
       "id": "ai-ml",
       "title": "AI & Machine Learning",
-      "blurb": "LLMs, Retrieval and Agentic Systems",
+      "blurb": "RAG Pipelines, Embeddings & Semantic Search, Evaluation",
       "items": [
         "Machine Learning",
         "Neural Networks",
         "Large Language Models",
         "Retrieval-Augmented Generation",
         "Agentic AI",
+        "Semantic Search",
+        "Reranking",
         "Sentence Transformers",
-        "ChromaDB",
-        "LangChain"
+        "LangChain",
+        "Groq API"
       ],
       "highlight": ["Retrieval-Augmented Generation", "Agentic AI"]
     },
     {
       "id": "languages-frameworks",
       "title": "Languages & Frameworks",
-      "blurb": "Core Languages and Backend APIs",
-      "items": ["Python", "C++", "FastAPI"],
-      "highlight": ["Python"]
+      "blurb": "REST API Design, LLM Integration, Full-Stack Builds",
+      "items": ["Python", "C++", "JavaScript", "HTML & CSS", "FastAPI", "React"],
+      "highlight": ["Python", "React"]
     },
     {
       "id": "data-tools",
-      "title": "Data & Tools",
-      "blurb": "Data Processing, Experimentation and Version Control",
+      "title": "Tools, Databases & Cloud",
+      "blurb": "Predictive Modeling, Data Processing, Deployment",
       "items": [
-        "NumPy",
+        "ChromaDB",
         "Pandas",
+        "NumPy",
         "Scikit-learn",
+        "Google Earth Engine",
         "Jupyter Notebook",
         "Git",
         "GitHub",
-        "VS Code"
+        "VS Code",
+        "Vercel",
+        "Render"
       ],
-      "highlight": ["Pandas"]
+      "highlight": ["ChromaDB", "Pandas"]
     }
   ]
 }

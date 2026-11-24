@@ -14,7 +14,23 @@
     "React + Vite"
   ],
   "facts": [],
-  "images": [],
+  "images": [
+    {
+      "file": "scientific-research-assistant/home.jpg",
+      "alt": "Nerivane Home page",
+      "caption": "Nerivane home page"
+    },
+    {
+      "file": "scientific-research-assistant/ui.webp",
+      "alt": "Answer view with sources",
+      "caption": "Answers with paper and page references"
+    },
+    {
+      "file": "scientific-research-assistant/data.webp",
+      "alt": "Data query result",
+      "caption": "Data query result"
+    }
+  ],
   "note": null,
   "sections": [
     {
@@ -29,39 +45,106 @@
       "type": "pipeline",
       "title": "How a question is answered",
       "nodes": [
-        { "id": "query", "icon": "message", "title": "User question", "subtitle": "Sent from the React interface to the FastAPI backend" },
-        { "id": "router", "icon": "route", "title": "Query router", "subtitle": "An LLM decides: PAPER, DATA or BOTH" },
-        { "id": "retrieval", "icon": "search", "title": "Hybrid retrieval", "subtitle": "ChromaDB vectors + BM25, merged with Reciprocal Rank Fusion" },
-        { "id": "data", "icon": "table", "title": "Ocean data tool", "subtitle": "pandas queries over a sample oceanographic dataset" },
-        { "id": "rerank", "icon": "sort", "title": "Cross-encoder reranking", "subtitle": "Keeps the most relevant passages" },
-        { "id": "answer", "icon": "sparkle", "title": "Grounded answer", "subtitle": "Written from the evidence, with sources" }
+        {
+          "id": "query",
+          "icon": "message",
+          "title": "User question",
+          "subtitle": "Sent from the React interface to the FastAPI backend"
+        },
+        {
+          "id": "router",
+          "icon": "route",
+          "title": "Query router",
+          "subtitle": "An LLM decides: PAPER, DATA or BOTH"
+        },
+        {
+          "id": "retrieval",
+          "icon": "search",
+          "title": "Hybrid retrieval",
+          "subtitle": "ChromaDB vectors + BM25, merged with Reciprocal Rank Fusion"
+        },
+        {
+          "id": "data",
+          "icon": "table",
+          "title": "Ocean data tool",
+          "subtitle": "pandas queries over a sample oceanographic dataset"
+        },
+        {
+          "id": "rerank",
+          "icon": "sort",
+          "title": "Cross-encoder reranking",
+          "subtitle": "Keeps the most relevant passages"
+        },
+        {
+          "id": "answer",
+          "icon": "sparkle",
+          "title": "Grounded answer",
+          "subtitle": "Written from the evidence, with sources"
+        }
       ],
       "layers": [
-        ["query"],
-        ["router"],
-        ["retrieval", "data"],
-        ["rerank", null],
-        ["answer"]
+        [
+          "query"
+        ],
+        [
+          "router"
+        ],
+        [
+          "retrieval",
+          "data"
+        ],
+        [
+          "rerank",
+          null
+        ],
+        [
+          "answer"
+        ]
       ],
       "routes": [
         {
           "label": "Paper question",
           "icon": "doc",
-          "paths": [["query", "router", "retrieval", "rerank", "answer"]],
+          "paths": [
+            [
+              "query",
+              "router",
+              "retrieval",
+              "rerank",
+              "answer"
+            ]
+          ],
           "note": "Answers cite the paper and page of each passage."
         },
         {
           "label": "Data question",
           "icon": "table",
-          "paths": [["query", "router", "data", "answer"]],
+          "paths": [
+            [
+              "query",
+              "router",
+              "data",
+              "answer"
+            ]
+          ],
           "note": "Numerical questions are answered from a sample oceanographic dataset."
         },
         {
           "label": "Both",
           "icon": "layers",
           "paths": [
-            ["query", "router", "retrieval", "rerank", "answer"],
-            ["router", "data", "answer"]
+            [
+              "query",
+              "router",
+              "retrieval",
+              "rerank",
+              "answer"
+            ],
+            [
+              "router",
+              "data",
+              "answer"
+            ]
           ],
           "note": "Evidence from the papers and results from the data tool are combined into one answer."
         }
@@ -71,25 +154,64 @@
       "type": "steps",
       "title": "Behind the retrieval step",
       "steps": [
-        { "title": "Document ingestion", "text": "Research PDFs are extracted and processed into text." },
-        { "title": "Chunking", "text": "Text is divided into overlapping chunks that keep paper and page metadata." },
-        { "title": "Dense retrieval", "text": "Sentence-transformer embeddings retrieve semantically relevant passages from ChromaDB." },
-        { "title": "Keyword retrieval", "text": "BM25 finds passages that match important terms in the query." },
-        { "title": "Hybrid fusion", "text": "Reciprocal Rank Fusion combines the dense and keyword rankings." }
+        {
+          "title": "Document ingestion",
+          "text": "Research PDFs are extracted and processed into text."
+        },
+        {
+          "title": "Chunking",
+          "text": "Text is divided into overlapping chunks that keep paper and page metadata."
+        },
+        {
+          "title": "Dense retrieval",
+          "text": "Sentence-transformer embeddings retrieve semantically relevant passages from ChromaDB."
+        },
+        {
+          "title": "Keyword retrieval",
+          "text": "BM25 finds passages that match important terms in the query."
+        },
+        {
+          "title": "Hybrid fusion",
+          "text": "Reciprocal Rank Fusion combines the dense and keyword rankings."
+        }
       ]
     },
     {
       "type": "metrics",
       "title": "Evaluation",
       "items": [
-        { "value": "100%", "label": "Route accuracy" },
-        { "value": "73 / 73", "label": "Valid citations" },
-        { "value": "83.3%", "label": "Retrieval Hit@1" },
-        { "value": "100%", "label": "Retrieval Hit@3" },
-        { "value": "0.917", "label": "Mean reciprocal rank" },
-        { "value": "2 / 2", "label": "Data answers correct" },
-        { "value": "8.98 s", "label": "Average latency" },
-        { "value": "11 / 11", "label": "Test cases completed" }
+        {
+          "value": "100%",
+          "label": "Route accuracy"
+        },
+        {
+          "value": "73 / 73",
+          "label": "Valid citations"
+        },
+        {
+          "value": "83.3%",
+          "label": "Retrieval Hit@1"
+        },
+        {
+          "value": "100%",
+          "label": "Retrieval Hit@3"
+        },
+        {
+          "value": "0.917",
+          "label": "Mean reciprocal rank"
+        },
+        {
+          "value": "2 / 2",
+          "label": "Data answers correct"
+        },
+        {
+          "value": "8.98 s",
+          "label": "Average latency"
+        },
+        {
+          "value": "11 / 11",
+          "label": "Test cases completed"
+        }
       ],
       "note": "Measured on a set of 11 test cases. These results reflect the current evaluation set and test environment, and are not guarantees for arbitrary research questions or larger datasets."
     },
